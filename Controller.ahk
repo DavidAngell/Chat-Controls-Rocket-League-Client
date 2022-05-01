@@ -1,6 +1,6 @@
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+#NoEnv
+SendMode Input
+SetWorkingDir %A_ScriptDir% 
 CoordMode ToolTip
 #Persistent
 #SingleInstance Force
@@ -16,7 +16,6 @@ global POLL_RATE := 0.5 ; ms
 SetTimer WatchController, %POLL_RATE%
 
 WatchController:
-	; StartTime := A_TickCount
 	State := XInput_GetState(0) ; presumably one would only use gamepad 0 for this but it can be changed
 	if State {
 		if !OldState {
@@ -47,13 +46,6 @@ WatchController:
 		DigitalThumbStick_AnalogToDigital("sThumbRY", XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 
 		OldState := State
-		; ExecutionTime := A_TickCount - StartTime
-		; OldIntervalTier := Ceil(Abs(OldState[sThumbName]) / (32767 / DigitalThumbStick_OnTimeTiers.MaxIndex())) ; converting coorinates into a number 1-5
-		; IntervalTier := Ceil(Abs(State[sThumbName]) / (32767 / DigitalThumbStick_OnTimeTiers.MaxIndex())) ; converting coorinates into a number 1-5
-		; IntervalTierVal := DigitalThumbStick_OnTimeTiers[IntervalTier]
-		; NewIntervalTierVal := onTimes[NewIntervalTier]
-		; yeet := State.bLeftTrigger
-		; ToolTip % " Old Left Stick Tier X: " OldIntervalTierVal "`n New Left Stick Tier Y: " NewIntervalTierVal "`n yeet: " "`n Execution Time: " ExecutionTime "ms", 200, 500
 	}
 return
 

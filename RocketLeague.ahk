@@ -1,6 +1,6 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+﻿#NoEnv
+SendMode Input
+SetWorkingDir %A_ScriptDir% 
 CoordMode ToolTip
 #Persistent
 #SingleInstance Force
@@ -10,12 +10,12 @@ Run, "Controller.ahk"
 #Include <KeyBinds>
 
 OldCommand = ""
-; SetTimer, WatchCommandsFile, 100
+SetTimer, WatchCommandsFile, 100
 
-; WatchCommandsFile:
-; 	FileRead, Command, %A_ScriptDir%\NetworkClient\janky_commands.txt
-; 	RunCommand(Command)
-; return
+WatchCommandsFile:
+	FileRead, Command, %A_ScriptDir%\NetworkClient\janky_commands.txt
+	RunCommand(Command)
+return
 
 RunCommand(Command) {
 	if (Command != OldCommand) { ; there will be a bug if the same command is sent twice but i am lazy :)
@@ -60,7 +60,6 @@ RunCommand(Command) {
 
 PressKey(BindName, ms = 10000) {
 	key := InGameBinds[BindName]
-	ToolTip % "Hotkey: " key, 150, 700
 	Send, {%key% Down}
 	Sleep ms
 	Send, {%key% Up}
@@ -68,8 +67,6 @@ PressKey(BindName, ms = 10000) {
 
 DisableKey(BindName, ms = 10000) {
 	key := InGameBinds[BindName]
-	ToolTip % "Disabled: " key, 150, 700
-
 	Hotkey, %key%, Disable_Return
 	Sleep, %ms%
 	Hotkey, %key%, Off
@@ -123,10 +120,5 @@ ConstantJump(ms = 10000) {
 		i := i + 1
 	}
 }
-
-^j::
-	FileRead, Command, %A_ScriptDir%\NetworkClient\janky_commands.txt
-	RunCommand(Command)
-return
 
 #x::ExitApp ; Win+X
