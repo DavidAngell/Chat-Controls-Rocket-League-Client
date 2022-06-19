@@ -1,21 +1,33 @@
-const request = require('request-promise');
-const fs = require("fs");
+const fs = require("fs")
+const readline = require("readline")
+const { io } = require("socket.io-client");
 
-SERVER_DOMAIN = "http://localhost:8000";
+const rl = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout,
+});
 
-async function getCurrentCommand() {
-	if (new Date().getSeconds() == 1) {
-		const command = JSON.parse(await request.get(SERVER_DOMAIN + "/currentCommand"));
-		console.log(command)
-		if (!command.error) {
-			fs.writeFile('janky_commands.txt', command.content, err => {
-				if (err) console.error(err)
-				else console.log("Current Command: " + command.content)
-			})
-		} else {
-			console.error(command.errorContent);
-		}
-	}
-}
+rl.question("Please enter web socket url: ", url => {
+	console.log("Awaiting server connection...")
+	const socket = io(url);
+	socket.once("connection established", () => {
+		console.log("Connected to server!")
 
-setInterval(getCurrentCommand, 1000);
+		socket.on("currentCommand", (...args) => {
+			try {
+				const command = args[0];
+				if (!command.error) {
+					fs.writeFile('janky_commands.txt', command.content, err => {
+						if (err) throw err
+						else console.log("Current Command: " + command.content)
+					})
+				} else {
+					throw command.errorContent
+				}
+
+			} catch (error) {
+				console.error(err)
+			}
+		});
+	})
+});

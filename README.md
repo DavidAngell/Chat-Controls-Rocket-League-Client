@@ -7,7 +7,7 @@ The local client is split up into two distinct sections: the Controller Handler 
 
 The Command Runner script starts the Controller Watcher script. Then, these two processes run parallel to one another:
 
-![Local Client Overview.png](https://github.com/DavidAngell/Chat-Controls-Rocket-League-Client/blob/565294ebcd9077b6c5a16b737988267298aac9b9/ReadMeImages/Local_Client_Overview.png)
+![Local Client Overview.png](ReadMeImages/Local_Client_Overview.png)
 
 # Xinput.dll and Global Variables
 
@@ -333,7 +333,7 @@ if State {
 
 This is the point where I began to really regret my chosen methodology, but I pushed on anyway. Because the triggers and sticks can’t merely be directly translated into an “up” or “down” keystroke, I decided that spamming keys was the best choice. Every few milliseconds, a cycle is repeated in which a key is pressed down for some time and unpressed for some time such that the inputs are averaged out into an analog input.
 
-![Local Client Overview - Analog Inputs.png](https://github.com/DavidAngell/Chat-Controls-Rocket-League-Client/blob/565294ebcd9077b6c5a16b737988267298aac9b9/ReadMeImages/Local_Client_Overview_-_Analog_Inputs.png)
+![Local Client Overview - Analog Inputs.png](ReadMeImages/Local_Client_Overview_-_Analog_Inputs.png)
 
 ### Triggers
 
