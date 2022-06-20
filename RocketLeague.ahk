@@ -1,25 +1,22 @@
 ﻿#NoEnv
+#UseHook
+#InstallMouseHook
+#InstallKeybdHook
 SendMode Input
 SetWorkingDir %A_ScriptDir% 
 CoordMode ToolTip
 #Persistent
 #SingleInstance Force
 
-Run %ComSpec% /c "node VotingServerWatcher.js", %A_ScriptDir%/NetworkClient/, Hide
+Run %ComSpec% /c "node VotingServerWatcher.js", %A_ScriptDir%/NetworkClient/
 Run, "Controller.ahk"
 #Include <KeyBinds>
 
-OldCommand = ""
-SetTimer, WatchCommandsFile, 100
-
-WatchCommandsFile:
-	FileRead, Command, %A_ScriptDir%\NetworkClient\janky_commands.txt
-	RunCommand(Command)
-return
+global OldCommand = ""
 
 RunCommand(Command) {
 	if (Command != OldCommand) { ; there will be a bug if the same command is sent twice but i am lazy :)
-		ToolTip % "Penis: " Command, 150, 400
+		ToolTip % "Penis: " OldCommand, 150, 400
 		switch Command {
 			case "Change_Camera": ChangeCamera()
 			case "Disable_Air_Roll": DisableKey("Air Roll")
@@ -35,7 +32,7 @@ RunCommand(Command) {
 			case "Disable_Jump": DisableKey("Jump")
 			case "Force_Boost": PressKey("Boost")
 			case "Force_Drive_Forward": PressKey("Drive Forward")
-			case "Force_Drive_Backwards": PressKey("Drive Backwards")
+			case "Force_Drive_Backwards": PressKey("Drive BackwaDrds")
 			case "Force_Steer_Right": PressKey("Steer Right")
 			case "Force_Steer_Left": PressKey("Steer Left")
 			case "Force_Constant_Jump": ConstantJump()
@@ -53,9 +50,10 @@ RunCommand(Command) {
 		}
 
 		OldCommand := Command
+
 	}
 
-	ToolTip % "Current Command: " Command, 150, 300
+	ToolTip % "Ran command", 150, 400
 }
 
 PressKey(BindName, ms = 10000) {
@@ -67,12 +65,13 @@ PressKey(BindName, ms = 10000) {
 
 DisableKey(BindName, ms = 10000) {
 	key := InGameBinds[BindName]
+	ToolTip % "Key: " key, 150, 400
 	Hotkey, %key%, Disable_Return
 	Sleep, %ms%
 	Hotkey, %key%, Off
 
 	Disable_Return:
-	return
+		return
 }
 
 ArrayContains(arr, val) {
@@ -120,5 +119,13 @@ ConstantJump(ms = 10000) {
 		i := i + 1
 	}
 }
+
+SetTimer, WatchCommandsFile, 100
+
+WatchCommandsFile:
+	FileRead, Command, %A_ScriptDir%\NetworkClient\janky_commands.txt
+	RunCommand(Command)
+	OldCommand := Command
+return
 
 #x::ExitApp ; Win+X
