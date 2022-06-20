@@ -1,4 +1,5 @@
 # **Currently Bricked After Season 7** 😠
+My disappointment is immeasurable and my day is ruined
 
 # Chat-Controls-Rocket-League-Client
 The local client (game-side) for a program that we have been working on for a livestream chat to control Rocket League. Server script coming soon...
